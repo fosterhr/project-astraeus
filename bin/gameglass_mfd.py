@@ -1,8 +1,9 @@
-import webview
-import requests
 from os import system
-import os.path
-import json
+from os.path import join, dirname, abspath
+from json import load
+from tracemalloc import start
+from webview import create_window, start
+from requests import get
 
 system("cls")
 
@@ -10,24 +11,24 @@ print("------------------------------------------")
 print("             Project Astraeus             ")
 print("------------------------------------------")
 
+quick_url = ""
+base_url = "https://app.gameglass.gg/shardlibrary/"
+
 print("Checking internet connection...", flush=True, end=" ")
 while True:
     try:
-        requests.get('https://google.com/', timeout=1).status_code
+        get('https://google.com/', timeout=1).status_code
         break
     except:
         pass
 print("Success")
 
-quick_url = ""
-base_url = "https://app.gameglass.gg/shardlibrary/"
-
 print("Loading configuration file...", flush=True, end=" ")
 try:
-    base_path = os.path.dirname(os.path.abspath(__file__))
-    conf_path = os.path.join(base_path, "gameglass_conf.json")
+    base_path = dirname(abspath(__file__))
+    conf_path = join(base_path, "gameglass_conf.json")
     with open(conf_path) as file:
-        conf_json = json.load(file)
+        conf_json = load(file)
     
     print("Success")
 
@@ -50,6 +51,6 @@ print("Starting webview application...", flush=True, end=" ")
 
 toggle_fullscreen = lambda window: window.toggle_fullscreen()
 
-window = webview.create_window("Project Astraeus", base_url + quick_url)
-webview.start(toggle_fullscreen, window)
+window = create_window("Project Astraeus", base_url + quick_url)
+start(toggle_fullscreen, window)
 print("Success")
